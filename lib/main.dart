@@ -54,14 +54,28 @@
 // }
 
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_learn/screens/home_screen.dart';
 import 'package:firebase_learn/screens/second_screen.dart';
 import 'package:firebase_learn/services/notification_service.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initializeNotification();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // get token android
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  if(fcmToken!=null){
+    //do something
+    print("token: ${fcmToken}");
+  }
 
   runApp(const MyApp());
 }
