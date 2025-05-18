@@ -1,16 +1,34 @@
-# firebase_learn
+# Awesome Notifications with Firebase in Flutter Apps - Assignment - 19 May 2025
 
-A new Flutter project.
+## Setup Firebase Messaging
+1. Menjalankan command `flutter pub add firebase_messaging` di terminal project
+2. Rerun project
+3. Inisialisasi firebase dengan menambahkan kode berikut ke fungsi main:
+```dart
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+```
+4. Ambil token firebase messaging dari local device `final fcmToken = await FirebaseMessaging.instance.getToken();` kemudian tampilkan untuk dicopy, contoh di bawah akan menampilkan token di runtime terminal:
+```dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initializeNotification();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-## Getting Started
+  // get token android
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  if(fcmToken!=null){
+    //do something
+    print("token: ${fcmToken}");
+  }
 
-This project is a starting point for a Flutter application.
+  runApp(const MyApp());
+}
+```
+5. Menambahkan token yang diperoleh ke Firebase Cloud Messaging [FCM](https://firebase.google.com/products/cloud-messaging), kemudian lakukan pengetesan
+![image](https://github.com/user-attachments/assets/432fe361-e4e3-425d-a570-dc0e71fbcd84)
+![image](https://github.com/user-attachments/assets/9db9fc77-0371-41cf-ad17-a7c573ef05d8)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
