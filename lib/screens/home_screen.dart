@@ -1,9 +1,40 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_learn/services/notification_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Listener untuk notifikasi FCM saat app di foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage msg) {
+      // Bisa langsung pake AwesomeNotifications:
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: msg.hashCode,
+          channelKey: 'basic_channel',
+          title: msg.notification?.title ?? 'No Title',
+          body: msg.notification?.body ?? 'No body',
+        ),
+      );
+
+      // panggil NotificationService:
+      // NotificationService.createNotification(
+      //   id: msg.hashCode,
+      //   title: msg.notification?.title ?? 'No Title',
+      //   body: msg.notification?.body ?? 'No body',
+      // );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
